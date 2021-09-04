@@ -1,0 +1,16 @@
+***ENEM: 201048085900
+
+***AVA-Canvas***
+1336642 / fairytail159 
+
+***SGA***
+741648 / 2104709
+1336642@sga.pucminas.br
+
+***Rodar vários arquivos:***
+g++ -c animal.cpp
+g++ -c animais.cpp
+g++ mainanimais.cpp -o mainanimais animal.o animais.o ./mainanimais
+
+***Banco Inter:***
+@Tfs1509 - 0001 - 0910 12659486-4
