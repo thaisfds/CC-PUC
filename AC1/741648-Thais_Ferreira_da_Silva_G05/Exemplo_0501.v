@@ -12,15 +12,14 @@
 // 3 1 1 0
 //
 // -------------------------
-module f5 ( output s,
-input a,
-input b );
+module f5a ( output s, input a, input b );
 // definir dado local
 wire not_a;
 // descrever por portas
 not NOT1 ( not_a, a );
 and AND1 ( s, not_a, b );
-endmodule // f5
+endmodule // f5a
+
 // -------------------------
 // f5_gate
 // m a b s
@@ -30,20 +29,22 @@ endmodule // f5
 // 3 1 1 0
 //
 // -------------------------
-module f5b ( output s,
-input a,
-input b );
+module f5b ( output s, input a, input b );
 // descrever por expressao
 assign s = ~a & b;
 endmodule // f5b
 
 module test_f5;
+
+
 // ------------------------- definir dados
 reg x;
 reg y;
 wire a, b;
 f5a moduloA ( a, x, y );
 f5b moduloB ( b, x, y );
+
+
 // ------------------------- parte principal
 initial
 begin : main
