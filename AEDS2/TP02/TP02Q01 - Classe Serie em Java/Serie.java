@@ -22,30 +22,6 @@ linhas, umapara cada registro contido em uma linha da entrada padr ̃ao.
 Quando reiniciamos o Linux, ele normalmente apaga os arquivos existentes na pasta /tmp/.
 */
 
-class ClasseSerie {
-    
-    //verifica se chegou no fim
-    public static boolean isFim(String s){
-        return (s.length() == 3 && s.charAt(0) == 'F' && s.charAt(1) == 'I' && s.charAt(2) == 'M');
-    }
-
-    public static void main (String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in, "ISO-8859-1"));
-        /* 
-        System.out.print("\nCodigo: ");
-		codigo = Integer.parseInt(br.readLine()); pega int
-		login = br.readLine(); pega string
-		senha = br.readLine(); pega string
-		sexo = br.readLine().charAt(0); pega char
-        */
-        int link = br.readLine();
-        while (isFim(link) == false) {
-
-            link = br.readLine();
-        }
-    }
-}
-
 class Serie {
     private String nome;
     private String formato;
@@ -69,6 +45,7 @@ class Serie {
         this.episodios = 0;
     }
 
+    //sets
     public void setNome(String nome){
         this.nome = nome;
     }
@@ -97,47 +74,89 @@ class Serie {
         this.episodios = episodios;
     }
 
+    //gets
     public String getNome(){
-        return nome;
+        return this.nome;
     }
     public String getFormato(){
-        return formato;
+        return this.formato;
     }
     public String getDuracao(){
-        return duracao;
+        return this.duracao;
     }
     public String getPais(){
-        return pais;
+        return this.pais;
     }
     public String getIdioma(){
-        return idioma;
+        return this.idioma;
     }
     public String getEmissora(){
-        return emissora;
+        return this.emissora;
     }
     public String getTransmissao(){
-        return transmissao;
+        return this.transmissao;
     }
     public int getTemporadas(){
-        return temporadas;
+        return this.temporadas;
     }
     public int getEpisodios(){
-        return episodios;
+        return this.episodios;
     }
 
+    //clone
     public Serie clone(){
         Serie clone = new Serie(this.nome, this.formato, this.duracao, this.pais, this.idioma, this.emissora, this.transmissao, this.temporadas, this.episodios);
         return clone;
     }
 
+    //imprimir
     public void imprimir(String a){
-        System.out.print(nome + " " + formato + " "+ duracao + " " + pais + " " + idioma + " " + emissora + " " + transmissao + " " + temporadas + " " + episodios);
+        System.out.print(this.nome + " " + this.formato + " "+ this.duracao + " " + this.pais + " " + this.idioma + " " + this.emissora + " " + this.transmissao + " " + this.temporadas + " " + this.episodios);
         /*String‘‘nome formato duracao paisDeOrigem idiomaOriginal 
       emissoraDeTelevisaotransmissaoOriginal numeroTemporadas numeroEpisodio’’  
       */
     }
-    public void ler(String a){
-       //O metodo ler deve efetuar a leitura dos atributos de um registro.  
+    public void ler(String link) throws Exception{
+        //O metodo ler deve efetuar a leitura dos atributos de um registro.  
+        
+        String html = "";
+        String line = "";
+        String caminho = "/tmp_test/" + link;
+        
+        //String caminho = "/tmp/series/" + link;
+
+        BufferedReader file = new BufferedReader(new InputStreamReader(new FileInputStream(caminho), "UTF8"));
+        html = file.readLine();
+
+        while (html != null){
+            
+        }
+    }
+
+    //verifica se chegou no fim
+    public static boolean isFim(String s){
+        return (s.length() == 3 && s.charAt(0) == 'F' && s.charAt(1) == 'I' && s.charAt(2) == 'M');
+    }
+
+    //main
+    public static void main (String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in, "ISO-8859-1"));
+        
+        /* 
+        System.out.print("\nCodigo: ");
+		codigo = Integer.parseInt(br.readLine()); pega int
+		login = br.readLine(); pega string
+		senha = br.readLine(); pega string
+		sexo = br.readLine().charAt(0); pega char
+        */
+        String link = br.readLine();
+        
+        //while (isFim(link) == false) {
+            
+            link = br.readLine();
+            ler(link);
+
+        //}
     }
 
 }
