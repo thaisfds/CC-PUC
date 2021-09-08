@@ -1,0 +1,87 @@
+1. Projetar o primeiro nome e o último nome dos atores que são diretores;
+A = π first_name,last_name ( ρ id ← directors.id, first_name ← directors.first_name, last_name ← directors.last_name ( directors )  )
+B = π first_name, last_name ( ρ id ← actors.id, first_name ← actors.first_name, last_name ← actors.last_name ( actors ) )
+π first_name, last_name ( A ∩ B )
+
+2. Projetar o primeiro nome e o último nome dos atores que não são diretores;
+A = π first_name,last_name ( ρ id ← directors.id, first_name ← directors.first_name, last_name ← directors.last_name ( directors )  )
+B = π first_name, last_name ( ρ id ← actors.id, first_name ← actors.first_name, last_name ← actors.last_name ( actors ) )
+π first_name, last_name ( A - B )
+
+
+3. Projetar o primeiro nome e o último nome dos atores e diretores;
+A = π first_name,last_name ( ρ id ← directors.id, first_name ← directors.first_name, last_name ← directors.last_name ( directors )  )
+B = π first_name, last_name ( ρ id ← actors.id, first_name ← actors.first_name, last_name ← actors.last_name ( actors ) )
+π first_name, last_name ( A ∪ B )
+
+
+4. Projetar o nome dos filmes que não são dirigidos por nenhum diretor;
+A = movies ⨝ movies.id = movies_directors.movie_id  movies_directors 
+B = A  ⨝ movies_directors.director_id = directors.id directors 
+π name ( movies - (π movies.id, movies.name, movies.year, movies.rank ( B )) )
+
+
+5. Projetar primeiro nome e o último nome dos atores que não atuaram em pelo menos dois filmes;
+A = movies ⨝ movies.id = roles.movie_id ( roles ) ⨝ roles.actor_id = actors.id ( actors )
+B = γ actors.id, actors.first_name, actors.last_name; COUNT(*)-> NUMEROFILMES ( A )
+π first_name, last_name ( B - σ NUMEROFILMES ≥ 2 ( B ) )
+
+
+6. Projetar, por gênero e ano, o número médio de filmes com menos de dois atores atuando.
+A = movies ⨝ id = movie_id (movies_genres)
+B = A ⨝ movies_genres.movie_id = roles.movie_id roles
+C = γ roles.movie_id, genre, year; COUNT(actor_id) -> FILMES (B)
+π movies_genres.genre, movies.year (σ FILMES < 2 (C))
+
+-- Nao soube incrementar o AVG, mas acho que seja algo proximo de:
+-- π movies_genres.genre, movies.year, (γ roles.movie_id ;AVG(FILMES) -> (C)) (σ FILMES < 2 (C))
+
+
+
+======================================== GABARITO ========================================
+1. 
+A = actors ⨝ actors.first_name = directors.first_name ∧ actors.last_name = directors.last_name directors
+π actors.first_name,actors.last_name (A)
+
+ou
+
+A = π first_name,last_name ( directors)
+B = π first_name, last_name ( actors )
+π first_name, last_name ( A ∩ B )
+
+2.
+A = π first_name,last_name ( directors)
+B = π first_name, last_name ( actors )
+π first_name, last_name ( A - B )
+
+3.
+A = π first_name,last_name ( directors)
+B = π first_name, last_name ( actors )
+π first_name, last_name ( A U B )
+
+4. 
+A = πid (movies)
+B = πmovie_id (movies_directors)
+C = A - B
+D = ρ novo_id <- id (C)
+E = D ⨝ novo_id = id movies
+π name (E)
+
+5.
+A = γ actor_id;COUNT(movie_id) -> TOTAL (roles)
+B = σ TOTAL ≥ 2 (A)
+C = π actor_id (B)
+D = π id (actors)
+E = ρ idactor <- actors.id ( D - C )
+F = (E) ⨝ idactor = actors.id (actors)
+π first_name,last_name (F)
+
+6.
+A = γ movie_id;COUNT(movie_id) -> TOTAL (roles)
+B = σ TOTAL ≥ 2 (A)
+C = π movie_id (B)
+D = π id (movies)
+E = ρ idmov <- movies.id (D - C)
+F = (E) ⨝ idmov = movies.id movies
+G = (F) ⨝ idmov = movies_genres.movie_id movies_genres
+γ movies_genres.genre, movies.year;COUNT(*) -> TOTAL (G)

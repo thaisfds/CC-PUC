@@ -1,0 +1,53 @@
+1.Projetar o primeiro nome e o último nome dos atores de sexo feminino;
+π first_name, last_name (σ gender =  'F' (actors))
+
+2.Projetar o nome dos filmes com ano superior à 1999;
+π name (σ year >  1999 (movies))
+
+3.Projetar o nome do filme e o nome do diretor de cada filme;
+π movies.name, directors.first_name, directors.last_name (σ movies_directors.director_id = directors.id ∧ movies_directors.movie_id = movies.id (movies x directors x movies_directors))
+
+4.Projetar o nome do filme, nome do ator e o papel que cada ator teve no filme para filmes com ranking acima da nota 6;
+π movies.name, actors.first_name, actors.last_name, roles.role (σ (movies.rank > 6) ∧ (actors.id = roles.actor_id) ∧ (roles.movie_id = movies.id) (actors ⨯ roles ⨯ movies))
+
+5.Projetar o nome do diretor e o número de filmes que cada diretor dirigiu;
+π directors.first_name, directors.last_name, A (σ movies_directors.director_id = directors.id (γ director_id; count(movies_directors.movie_id) -> A (movies_directors) x (directors)))
+
+6.Projetar o gênero e o número de filmes de cada gênero; 
+Não consegui
+
+7.Projetar o gênero, o ranking (nota) médio, mínimo e máximo dos filmes do gênero.
+Não consegui
+
+****************************************** GABARITO ******************************************
+
+1.
+π first_name, last_name (σ gender =  'F' (actors))
+
+2.
+A = σ year > 1999 (movies)
+π name (A)
+
+3. 
+A = directors ⨝ directors.id = movies_directors.director_id movies_directors 
+B = (A) ⨝ movies_directors.movie_id = movies.id (movies)
+π movies.name, directors.first_name, directors.last_name (B)
+
+4.
+C = σ movies.rank > 6 (movies)
+A = actors ⨝ actors.id = roles.actor_id roles
+B = (A) ⨝ roles.movie_id = movies.id (C)
+
+π movies.name, actors.first_name, actors.last_name (B)
+
+5.
+A = γ director_id;COUNT(*)->TOTAL ( movies_directors)
+B = directors ⨝ directors.id = movies_directors.director_id ( A )
+π directors.first_name, directors.last_name, TOTAL (B)
+
+6.
+γ genre;COUNT(*)->TOTAL ( movies_genres )
+
+7.
+A = (movies) ⨝ movies.id = movies_genres.movie_id (movies_genres)
+γ movies_genres.genre;AVG(movies.rank)->MEDIA,MIN(movies.rank)->MINIMO,MAX(movies.rank)->MAXIMO (A)

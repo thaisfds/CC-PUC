@@ -1,0 +1,57 @@
+1.O que é um sistema de banco de dados (SBD)?
+É um conjunto de dados relacionados e suas respectivas formas de acesso e organização.
+	
+2.Do que um SBD é composto?
+Ele é composto por uma coleção de dados organizados (Banco de dados), uma estrutura lógica que determiana a forma como os dados são armazenados, organizados e manipulados (Modelo de dados), e um software que provê acesso aos dados a usuários e aplicações (Sistema gerenciador de banco de dados) 
+
+3.Como usuários e aplicações interagem com um SBD?
+Eles submetem consultas que são interpretados pelo sistema, que realiza otimizações para sua correta execução.
+
+4.O que é um banco de dados (BD)? Cite um exemplo de um BD, indicando o link onde seja possível encontrá-lo.
+Um banco de dados é uma coleção de dados organizados. Um bom exemplo é o armazenamento dos produtos de uma loja online, como o do departamento Terabyte (https://www.terabyteshop.com.br)
+
+5.Quais são as propriedades de um BD?
+Um banco de dados precisa possuir uma finalidade que represente um contexto real, deve ser coerente e compartilhado. 
+
+6.Quais são as etapas de um projeto de BD?
+Criar um modelo, especificação do minimundo, analise de requisitos operacionais, projeto conceitual, projeto lógico, projeto físico, e revisão contínua do BD.
+
+7.O que é um sistema gerenciador de banco de dados (SGBD)?
+É um software que torna possível a criação e manutenção efetiva do banco de dados em um meio computadorizado. Através dele é possível especificar e armazenar metadados sobre a estrutura do bando de dados em um dicionário/catálogo, armazenar efetivamente os dados em meios físicos, manipular os dados, e prover acesso simultâneo a vários usuários.
+
+8.Quais são as propriedades de um SGBD?
+Controle de redundância, flexibilidade, múltiplas interfaces, economia de escala, garantia de padrões, restrições de acesso, backup e recuperação, disponibilidade elevada, restrições de integridade, tempo de desenvolvimento, relacionamentos complexos.
+
+9.Indique situações em que o uso de SGBD pode se mostrar inadequado.
+A abordagem SGBD não é adequada em situação de monousuário, baixa complexidade, requisitos rigorosos, alta especialização, e custo proibitivo.
+
+10.O que é um modelo de dados? 
+É uma estrutura lógica que determina a forma como os dados são armazenados, organizados e manipulados.
+
+11.Em relação ao nível de abstração, quais são os tipos de modelos de dados?
+Conceitual (alto nível), representativo (nível intermediário), e físico (baixo nível).
+
+12.O que é um Esquema de BD?
+É um conjunto de metadados que descrevem o banco de dados.
+
+13.O que é uma Instância de BD?
+É o conjunto de dados armazenados em determinando instante do tempo (momento).
+
+14.Quais as vantagens de se adotar uma Arquitetura de Três Esquemas para implementar um BD?
+Permite facilitar a visualização do usuário visando: prover uma natureza autodescritiva ao banco de dados, prover suporte a múltiplas visões de usuário, e garantir independência entre aplicações e dados.
+
+15.Quais níveis existem em uma Arquitetura de Três Esquemas?
+Externo, conceitual e interno.
+
+16.O que é Mapeamento em uma Arquitetura de Três Esquemas?
+É a transformação de requisições e resultados entre níveis.
+
+17.O que é Independência de Dados e qual sua importância para um SBD?
+É a capacidade de se alterar o esquema em um nível sem precisar alterar o esquema no nível adjacente superior. Isso é importante pois, permite alterar o esquema conceitual sem precisar alterar o esquema externo, e também permite alterar o esquema interno sem precisar alterar o esquema conceitual.
+
+18.O que é uma Linguagem de Consulta?
+É a linguagem oferecida pelo BD para que os usuários realizem as suas solicitações (consultas), como: VDL, DDL, SDL, e DML. Cada uma delas possui uma função e é focada e um tipo de usuário diferente.
+
+19.Cite as linguagens incorporadas na linguagem SQL.
+VDL, DDL, SDL, e DML.
+
