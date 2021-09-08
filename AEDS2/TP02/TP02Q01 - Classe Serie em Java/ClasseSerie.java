@@ -23,8 +23,26 @@ Quando reiniciamos o Linux, ele normalmente apaga os arquivos existentes na past
 */
 
 class ClasseSerie {
-    public static void main (String[] args){
-        
+    
+    //verifica se chegou no fim
+    public static boolean isFim(String s){
+        return (s.length() == 3 && s.charAt(0) == 'F' && s.charAt(1) == 'I' && s.charAt(2) == 'M');
+    }
+
+    public static void main (String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in, "ISO-8859-1"));
+        /* 
+        System.out.print("\nCodigo: ");
+		codigo = Integer.parseInt(br.readLine()); pega int
+		login = br.readLine(); pega string
+		senha = br.readLine(); pega string
+		sexo = br.readLine().charAt(0); pega char
+        */
+        int link = br.readLine();
+        while (isFim(link) == false) {
+
+            link = br.readLine();
+        }
     }
 }
 
@@ -107,11 +125,14 @@ class Serie {
         return episodios;
     }
 
-    public void clone(String a){
-        
+    public Serie clone(){
+        Serie clone = new Serie(this.nome, this.formato, this.duracao, this.pais, this.idioma, this.emissora, this.transmissao, this.temporadas, this.episodios);
+        return clone;
     }
+
     public void imprimir(String a){
-      /*String‘‘nome formato duracao paisDeOrigem idiomaOriginal 
+        System.out.print(nome + " " + formato + " "+ duracao + " " + pais + " " + idioma + " " + emissora + " " + transmissao + " " + temporadas + " " + episodios);
+        /*String‘‘nome formato duracao paisDeOrigem idiomaOriginal 
       emissoraDeTelevisaotransmissaoOriginal numeroTemporadas numeroEpisodio’’  
       */
     }
