@@ -23,6 +23,10 @@ Quando reiniciamos o Linux, ele normalmente apaga os arquivos existentes na past
 */
 
 class Serie {
+
+    public static Serie[] series= new Serie[1000];
+    public static int countGlobal = 0;
+
     private String nome;
     private String formato;
     private String duracao;
@@ -104,10 +108,10 @@ class Serie {
     }
 
     //clone
-    public Serie clone(){
+    /*public Serie clone(){
         Serie clone = new Serie(this.nome, this.formato, this.duracao, this.pais, this.idioma, this.emissora, this.transmissao, this.temporadas, this.episodios);
         return clone;
-    }
+    }*/
 
     //imprimir
     public void imprimir(String a){
@@ -116,12 +120,13 @@ class Serie {
       emissoraDeTelevisaotransmissaoOriginal numeroTemporadas numeroEpisodio’’  
       */
     }
-    public void ler(String link) throws Exception{
+
+    public void ler(String link) throws IOException {
         //O metodo ler deve efetuar a leitura dos atributos de um registro.  
         
         String html = "";
-        String line = "";
-        String caminho = "/tmp_test/" + link;
+        String caminho = "/home/thais/tmp_teste/series/" + link;
+        System.out.println(caminho);
         
         //String caminho = "/tmp/series/" + link;
 
@@ -131,8 +136,11 @@ class Serie {
         while (html != null){
             
         }
+        file.close();
     }
+}
 
+public class ClasseSerie extends Serie  {
     //verifica se chegou no fim
     public static boolean isFim(String s){
         return (s.length() == 3 && s.charAt(0) == 'F' && s.charAt(1) == 'I' && s.charAt(2) == 'M');
@@ -152,9 +160,12 @@ class Serie {
         String link = br.readLine();
         
         //while (isFim(link) == false) {
-            
+            System.out.println(link);
+            series[countGlobal] = new Serie();
+            series[countGlobal].ler(link);
+            countGlobal++;
             link = br.readLine();
-            ler(link);
+            
 
         //}
     }
