@@ -108,34 +108,97 @@ class Serie {
     }
 
     //clone
-    /*public Serie clone(){
+    /*
+    protected Serie clone(){
         Serie clone = new Serie(this.nome, this.formato, this.duracao, this.pais, this.idioma, this.emissora, this.transmissao, this.temporadas, this.episodios);
         return clone;
     }*/
 
     //imprimir
-    public void imprimir(String a){
-        System.out.print(this.nome + " " + this.formato + " "+ this.duracao + " " + this.pais + " " + this.idioma + " " + this.emissora + " " + this.transmissao + " " + this.temporadas + " " + this.episodios);
+    public void imprimir(){
+        System.out.println(this.nome + " " + this.formato + " "+ this.duracao + " " + this.pais + " " + this.idioma + " " + this.emissora + " " + this.transmissao + " " + this.temporadas + " " + this.episodios);
         /*String‘‘nome formato duracao paisDeOrigem idiomaOriginal 
       emissoraDeTelevisaotransmissaoOriginal numeroTemporadas numeroEpisodio’’  
       */
+    }
+    
+    public String removeTags(String line){
+        String newline = "";
+        int i=0;
+        while(i<line.length()){
+            if(line.charAt(i) == '<'){
+                i++;
+                while(line.charAt(i) != '>'){i++;}
+            }else if(line.charAt(i) == '&'){
+                i+=6;
+                if(line.charAt(i) == '<'){
+                    i++;
+                    while(line.charAt(i) != '>'){i++;}
+                }
+            }else if(line.charAt(i) == '+'){
+                i++;
+            }else{
+                newline += line.charAt(i);
+            }
+            i++;
+        }
+        /*while(i<line.length()){
+            if(line.charAt(i) == '<'){
+                i++;
+                while(line.charAt(i) != '>'){i++;}
+            }else{
+                if(line.charAt(i) == '&'){
+                    i+=6;
+                    if(line.charAt(i) == '<'){
+                        i++;
+                        while(line.charAt(i) != '>'){i++;}
+                        i++;
+                    }
+                }
+                newline += line.charAt(i);
+            }
+            i++;
+        }*/
+        return newline;
     }
 
     public void ler(String link) throws IOException {
         //O metodo ler deve efetuar a leitura dos atributos de um registro.  
         
-        String html = "";
         String caminho = "/home/thais/tmp_teste/series/" + link;
-        System.out.println(caminho);
         
         //String caminho = "/tmp/series/" + link;
 
         BufferedReader file = new BufferedReader(new InputStreamReader(new FileInputStream(caminho), "UTF8"));
-        html = file.readLine();
+        
+        while(!file.readLine().contains("infobox_v2"));
+        file.readLine();
+        this.nome = removeTags(file.readLine());
 
-        while (html != null){
-            
-        }
+        while(!file.readLine().contains("Formato"));
+        this.formato = removeTags(file.readLine());
+
+        while(!file.readLine().contains("Duração"));
+        this.duracao = removeTags(file.readLine());
+
+        while(!file.readLine().contains("País de origem"));
+        this.pais = removeTags(file.readLine());
+
+        while(!file.readLine().contains("Idioma original"));
+        this.idioma = removeTags(file.readLine());
+
+        while(!file.readLine().contains("Emissora de televisão original"));
+        this.emissora = removeTags(file.readLine());
+
+        while(!file.readLine().contains("Transmissão original"));
+        this.transmissao = removeTags(file.readLine());
+
+        while(!file.readLine().contains("N.º de temporadas"));
+        this.temporadas = Integer.parseInt(removeTags(file.readLine()));
+
+        while(!file.readLine().contains("N.º de episódios"));
+        this.episodios = Integer.parseInt(removeTags(file.readLine()));
+
         file.close();
     }
 }
@@ -159,15 +222,13 @@ public class ClasseSerie extends Serie  {
         */
         String link = br.readLine();
         
-        //while (isFim(link) == false) {
-            System.out.println(link);
+        while (isFim(link) == false) {
             series[countGlobal] = new Serie();
             series[countGlobal].ler(link);
+            series[countGlobal].imprimir();
             countGlobal++;
             link = br.readLine();
-            
-
-        //}
+        }
     }
 
 }
