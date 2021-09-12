@@ -24,8 +24,8 @@ Quando reiniciamos o Linux, ele normalmente apaga os arquivos existentes na past
 
 class Serie {
 
-    public static Serie[] series= new Serie[1000];
-    public static int countGlobal = 0;
+    public static Serie[] series= new Serie[1000]; //local onde serão armazenadas as séries
+    public static int countGlobal = 0; //contador Global
 
     private String nome;
     private String formato;
@@ -47,6 +47,17 @@ class Serie {
         this.transmissao = "";
         this.temporadas = 0;
         this.episodios = 0;
+    }
+    public Serie(String nome, String formato, String duracao, String pais, String idioma, String emissora, String transmissao, int temporada, int episodios){
+        this.nome = nome;
+        this.formato = formato;
+        this.duracao = duracao;
+        this.pais = pais;
+        this.idioma = idioma;
+        this.emissora = emissora;
+        this.transmissao = transmissao;
+        this.temporadas = temporada;
+        this.episodios = episodios;
     }
 
     //sets
@@ -108,18 +119,15 @@ class Serie {
     }
 
     //clone
-    /*
+    
     protected Serie clone(){
         Serie clone = new Serie(this.nome, this.formato, this.duracao, this.pais, this.idioma, this.emissora, this.transmissao, this.temporadas, this.episodios);
         return clone;
-    }*/
+    }
 
     //imprimir
     public void imprimir(){
         System.out.println(this.nome + " " + this.formato + " "+ this.duracao + " " + this.pais + " " + this.idioma + " " + this.emissora + " " + this.transmissao + " " + this.temporadas + " " + this.episodios);
-        /*String‘‘nome formato duracao paisDeOrigem idiomaOriginal 
-      emissoraDeTelevisaotransmissaoOriginal numeroTemporadas numeroEpisodio’’  
-      */
     }
     
     public String removeTags(String line){
@@ -128,26 +136,10 @@ class Serie {
         while(i<line.length()){
             if(line.charAt(i) == '<'){
                 i++;
-                while(line.charAt(i) != '>'){i++;}
-            }else if(line.charAt(i) == '&'){
-                i+=6;
-                if(line.charAt(i) == '<'){
-                    i++;
-                    while(line.charAt(i) != '>'){i++;}
-                }
-            }else if(line.charAt(i) == '+'){
-                i++;
+                while(line.charAt(i) != '>'){i++;} //remove o que estiver entre <...>
+                
             }else{
-                newline += line.charAt(i);
-            }
-            i++;
-        }
-        /*while(i<line.length()){
-            if(line.charAt(i) == '<'){
-                i++;
-                while(line.charAt(i) != '>'){i++;}
-            }else{
-                if(line.charAt(i) == '&'){
+                if(line.charAt(i) == '&'){ //corrige o erro de encontrar &#160;
                     i+=6;
                     if(line.charAt(i) == '<'){
                         i++;
@@ -155,19 +147,39 @@ class Serie {
                         i++;
                     }
                 }
-                newline += line.charAt(i);
+                if(line.charAt(i) == '<' && line.charAt(i+1) == 'a'){ //corrige o erro de pegar a tag <a...>
+                    i++;
+                    while(line.charAt(i) != '>'){i++;} 
+                } else{newline += line.charAt(i);}
+                
             }
             i++;
-        }*/
+        }
+        return newline;
+    }
+
+    //não numero foi a minha solução para quando ao pegar o numero de temporadas ou numero de episódios acabam passando caracteres não int pelo removeTags
+    //ele consiste em remover da linha tudo o que não estiver entre 47 e 58 na tabela ascii (numeros de 0 a 9)
+    public String naoNumero(String line){
+        String newline = "";
+        int i=0;
+        while(i<line.length()){
+            if ((int) line.charAt(i) > 47 && (int) line.charAt(i) < 58) {
+                newline += line.charAt(i);
+            }else{
+                i++;
+            }
+            i++;
+        }
         return newline;
     }
 
     public void ler(String link) throws IOException {
         //O metodo ler deve efetuar a leitura dos atributos de um registro.  
         
-        String caminho = "/home/thais/tmp_teste/series/" + link;
+        //String caminho = "/home/thais/tmp_teste/series/" + link;
         
-        //String caminho = "/tmp/series/" + link;
+        String caminho = "/tmp/series/" + link;
 
         BufferedReader file = new BufferedReader(new InputStreamReader(new FileInputStream(caminho), "UTF8"));
         
@@ -194,10 +206,10 @@ class Serie {
         this.transmissao = removeTags(file.readLine());
 
         while(!file.readLine().contains("N.º de temporadas"));
-        this.temporadas = Integer.parseInt(removeTags(file.readLine()));
+        this.temporadas = Integer.parseInt(naoNumero(removeTags(file.readLine())));
 
         while(!file.readLine().contains("N.º de episódios"));
-        this.episodios = Integer.parseInt(removeTags(file.readLine()));
+        this.episodios = Integer.parseInt(naoNumero(removeTags(file.readLine())));
 
         file.close();
     }
@@ -213,20 +225,13 @@ public class ClasseSerie extends Serie  {
     public static void main (String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in, "ISO-8859-1"));
         
-        /* 
-        System.out.print("\nCodigo: ");
-		codigo = Integer.parseInt(br.readLine()); pega int
-		login = br.readLine(); pega string
-		senha = br.readLine(); pega string
-		sexo = br.readLine().charAt(0); pega char
-        */
-        String link = br.readLine();
+        String link = br.readLine(); //le a primeira linha
         
         while (isFim(link) == false) {
-            series[countGlobal] = new Serie();
-            series[countGlobal].ler(link);
-            series[countGlobal].imprimir();
-            countGlobal++;
+            series[countGlobal] = new Serie(); //cria uma nova Serie
+            series[countGlobal].ler(link); //manda ler o html
+            series[countGlobal].imprimir(); //imprime a resposta
+            countGlobal++; //passa pro proximo espaço vazio de series
             link = br.readLine();
         }
     }
