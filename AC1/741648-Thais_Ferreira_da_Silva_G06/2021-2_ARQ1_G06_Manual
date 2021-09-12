@@ -272,3 +272,39 @@ X | 1 | 1 | 1 | 1 |Y'
   | Z'| Z | Z | Z'
 Com(4,5,6,7): X'+Y
 Com(14,15): X+Y+W
+
+==========================================================================
+
+05.) Identificar a equação característica do circuito lógicos abaixo e
+simplifica-la pelo mapa de Veitch-Karnaugh usando mintermos.
+Descrever e simular o circuito simplificado em Verilog e Logisim. 
+
+f (x,y,z) = ∑ m ( 4, 5, 6) = x.z'+ x.y'
+
+  | z'| z |
+x'| 0 | 0 |y'
+x'| 0 | 0 |y 
+x | 1 | 0 |y 
+x | 1 | 1 |y'
+Com(6,4): x.z' 
+Com(5,4): x.y'
+
+==========================================================================
+
+06.) Identificar as equações características dos circuitos lógicos abaixo e
+simplifica-las pelo mapa de Veitch-Karnaugh usando MAXTERMOS.
+Descrever e simular o circuito simplificado em Verilog e Logisim.
+
+F (X,Y,W,Z) = π M (0, 4, 5, 6, 7, 12, 13, 14, 15)
+= (X'+W'+Z').(X'+Y).(X+Y)
+
+  | W'| W'| W | W |
+X'| 0 | 1 | 1 | 1 |Y'
+X'| 0 | 0 | 0 | 0 |Y 
+X | 0 | 0 | 0 | 0 |Y 
+X | 1 | 1 | 1 | 1 |Y'
+  | Z'| Z | Z | Z'
+Com(0, 4): X'+W'+Z' 
+Com(4, 5, 6, 7): X'+Y 
+Com(12, 13, 14, 15): X+Y 
+ 
