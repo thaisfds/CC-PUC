@@ -279,7 +279,9 @@ Com(14,15): X+Y+W
 simplifica-la pelo mapa de Veitch-Karnaugh usando mintermos.
 Descrever e simular o circuito simplificado em Verilog e Logisim. 
 
-f (x,y,z) = ∑ m ( 4, 5, 6) = x.z'+ x.y'
+f (x,y,z) = ∑ m ( 4, 5, 6) = 
+= ((x'+y')'.(x.y)') + (((y.z)+x'))'
+= x.z'+ x.y'
 
   | z'| z |
 x'| 0 | 0 |y'
@@ -296,7 +298,8 @@ simplifica-las pelo mapa de Veitch-Karnaugh usando MAXTERMOS.
 Descrever e simular o circuito simplificado em Verilog e Logisim.
 
 F (X,Y,W,Z) = π M (0, 4, 5, 6, 7, 12, 13, 14, 15)
-= (X'+W'+Z').(X'+Y).(X+Y)
+= ((x'+y'+w)'.(x.y.w')') + (((y.z.w)+x'))'
+= (X'+W'+Z').(Y)
 
   | W'| W'| W | W |
 X'| 0 | 1 | 1 | 1 |Y'
@@ -305,6 +308,5 @@ X | 0 | 0 | 0 | 0 |Y
 X | 1 | 1 | 1 | 1 |Y'
   | Z'| Z | Z | Z'
 Com(0, 4): X'+W'+Z' 
-Com(4, 5, 6, 7): X'+Y 
-Com(12, 13, 14, 15): X+Y 
+Com(4, 5, 6, 7, 12, 13, 14, 15): Y 
  
