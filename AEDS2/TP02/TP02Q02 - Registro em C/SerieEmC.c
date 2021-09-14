@@ -14,7 +14,17 @@ typedef struct serie{
     int temporadas;
     int episodios;
 }serie;
-
+void construtor(serie *s){
+    strcpy(s->nome, " ");
+    strcpy(s->formato, " ");
+    strcpy(s->duracao, " ");
+    strcpy(s->pais, " ");
+    strcpy(s->idioma, " ");
+    strcpy(s->emissora, " ");
+    strcpy(s->transmissao, " ");
+    s->temporadas = 0;
+    s->episodios = 0;
+}
 void setNome(char *nome, serie *s){
     strcpy(s->nome, nome);
 }
@@ -138,6 +148,7 @@ char* removerTags(char* old){
 }
 
 void ler (char link[], serie *s){
+    construtor(s);
 
     FILE *fp = fopen(link,"r");
     char buf[3000];
@@ -220,8 +231,8 @@ bool isFim(char frase[]){
 }
 
 int main(){
-    //char link1 [50] = "/home/thais/tmp_teste/series/";
-    char link1 [50] = "/tmp/series/";
+    char link1 [50] = "/home/thais/tmp_teste/series/";
+    //char link1 [50] = "/tmp/series/";
     char link [100] = "";
     char html [50];
     scanf(" %[^\n]s",html);
