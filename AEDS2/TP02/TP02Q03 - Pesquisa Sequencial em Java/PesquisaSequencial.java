@@ -47,12 +47,13 @@ class Lista{
 
 public class PesquisaSequencial extends Lista {
     public static int comparacoes = 0;
+
     public static String replace (String s){
         String resp = "";
         int i=0;
         while(i<s.length()){
-            if(s.charAt(i) == ' '){
-                resp += '_';
+            if(s.charAt(i) == '_'){
+                resp += ' ';
             }else{resp += s.charAt(i);}
             i++;
         }
@@ -61,52 +62,14 @@ public class PesquisaSequencial extends Lista {
 
     public static String pesquisar(String s){
         String resp = "NÃO";
-        int tam = l1.getTamanho();
-        String VL;
-        String s2 = replace(s);
-                
-        for(int i=0;i<tam;i++){
-            VL = l1.getArray(i);
-            comparacoes +=2;
-            if(VL.contains(s) || VL.contains(s2)){
-                resp = "SIM";
-                return resp;
-            }
-        }
-        return resp;
-    }
-    /*
-    public static void PesquisaSeq(String[] pesquisa, int count) {
-        for (int i = 0; i < count; i++) {
-            Boolean achou = false;
-            for (int j = 0; j < countGlobal; j++) {
-                String nome = array[j].getNome();
-                comparacoes++;
-                if (pesquisa[i].equals(nome) == true) {
-                    achou = true;
-                    j = countGlobal;
-                } else {
-                    comparacoes++;
-                    if (nome.charAt(nome.length() - 1) == '*') {
-                        comparacoes++;
-                        if (pesquisa[i].equals(asterisco(nome)) == true) {
-                            achou = true;
-                            j = countGlobal;
-                        }
-                    }
-                }
-            }
-            comparacoes++;
-            if (achou == true) {
-                System.out.println("SIM");
-            } else if (achou == false) {
-                System.out.println("NAO");
-            }
-            comparacoes++;
+        int tam = s.length();
+        for(int i=0; i<tam; i++){
+            
         }
 
+
+        return resp;
     }
-    */
 
     public static void logCreator(long tempo1, long tempo2) throws Exception {
         long tempoExecucao = tempo2 - tempo1;
@@ -127,16 +90,16 @@ public class PesquisaSequencial extends Lista {
         String entrada; //armazena as pesquisas
         
         while (isFim(html) == false) {
-            l1.inserirFinal(html);
+            l1.inserirFinal(replace(html));
             html = br.readLine();
         }
-        //l1.imprimir();
-        entrada = br.readLine();
+        l1.imprimir();
+        //entrada = br.readLine();
 
-        while (isFim(entrada) == false) {
-            System.out.println(pesquisar(entrada));
-            entrada = br.readLine();
-        }
+        //while (isFim(entrada) == false) {
+            //System.out.println(pesquisar(entrada));
+            //entrada = br.readLine();
+        //}
     }
 
 }
