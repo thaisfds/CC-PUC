@@ -38,7 +38,7 @@ C = σ movies.rank > 6 (movies)
 A = actors ⨝ actors.id = roles.actor_id roles
 B = (A) ⨝ roles.movie_id = movies.id (C)
 
-π movies.name, actors.first_name, actors.last_name (B)
+π movies.name, actors.first_name, actors.last_name, roles.role (B)
 
 5.
 A = γ director_id;COUNT(*)->TOTAL ( movies_directors)
