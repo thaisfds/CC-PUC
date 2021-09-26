@@ -191,7 +191,7 @@ class Serie {
 
 class ListaSeq {
     
-    private String[] array;
+    private int[] array;
     private int n;
 
     public ListaSeq(){
@@ -316,10 +316,6 @@ class ListaSeq {
 
 }
 
-public class listaAlocSeq extends Serie{
-
-}
-
 public class ListaSequencial extends Serie{
     //verifica se chegou no fim
     public static boolean isFim(String s){
@@ -330,7 +326,7 @@ public class ListaSequencial extends Serie{
     //main
     public static void main (String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in, "ISO-8859-1"));
-        
+        ListaSeq l1 = new ListaSeq();
         String link = br.readLine(); //le a primeira linha
         
         while (isFim(link) == false) {
