@@ -189,133 +189,91 @@ class Serie {
     }
 }
 
-class ListaSeq extends Serie {
-    
-    private Serie[] array;
+class Celula {
+	public Serie elemento; // Elemento inserido na celula.
+	public Celula prox; // Aponta a celula prox.
+
+	public Celula() {
+		
+	}
+
+	public Celula(Serie elemento) {
+      this.elemento = elemento;
+      this.prox = null;
+	}
+}
+
+class Pilha {
+	private Celula topo;
     private int n;
 
-    public ListaSeq(){
-        this(100);
-    }
-
-    public ListaSeq (int tamanho){
-        array = new Serie[tamanho];
+	public Pilha() {
+		topo = null;
         n = 0;
-    }
+	}
 
-    //Editar
-    public void inserirInicio(Serie x) throws Exception {
-
-        //validar insercao
-        if(n >= array.length){
-           throw new Exception("Erro ao inserir!");
-        } 
-  
-        //levar elementos para o fim do array
-        for(int i = n; i > 0; i--){
-           array[i] = array[i-1];
-        }
-  
-        array[0] = x;
+	public void inserir(Serie x) {
+		Celula tmp = new Celula(x);
+		tmp.prox = topo;
+		topo = tmp;
+		tmp = null;
         n++;
-    }
+	}
 
-    //Editar
-    public void inserirFim(Serie x) throws Exception {
-
-        //validar insercao
-        if(n >= array.length){
-           throw new Exception("Erro ao inserir!");
-        }
-  
-        array[n] = x;
-        n++;
-    }
-
-    //Editar
-    public void inserir(Serie x, int pos) throws Exception {
-
-        //validar insercao
-        if(n >= array.length || pos < 0 || pos > n){
-           throw new Exception("Erro ao inserir!");
-        }
-  
-        //levar elementos para o fim do array
-        for(int i = n; i > pos; i--){
-           array[i] = array[i-1];
-        }
-  
-        array[pos] = x;
-        n++;
-    }
-
-    //Editar
-    public Serie removerInicio() throws Exception {
-
-        //validar remocao
-        if (n == 0) {
-           throw new Exception("Erro ao remover!");
-        }
-  
-        Serie resp = array[0];
+	public Serie remover() throws Exception {
+		if (topo == null) {
+			throw new Exception("Erro ao remover!");
+		}
+		Serie resp = topo.elemento;
+		Celula tmp = topo;
+		topo = topo.prox;
+		tmp.prox = null;
+		tmp = null;
         n--;
-  
-        for(int i = 0; i < n; i++){
-           array[i] = array[i+1];
-        }
-  
-        return resp;
-    }
+		return resp;
+	}
 
-    //Editar
-    public Serie removerFim() throws Exception {
+	public void mostrar() {
+		for (Celula i = topo; i != null; i = i.prox) {
+			i.elemento.imprimir(); 
+		}
+	}
+    /*
+	public int getSoma() {
+		return getSoma(topo);
+	}
 
-        //validar remocao
-        if (n == 0) {
-           throw new Exception("Erro ao remover!");
-        }
-  
-        return array[--n];
-    }
+	private int getSoma(Celula i) {
+		int resp = 0;
+		if (i != null) {
+			resp += i.elemento + getSoma(i.prox);
+		}
+		return resp;
+	}
+    public int getMax() {
+		int max = topo.elemento;
+		for (Celula i = topo.prox; i != null; i = i.prox) {
+			if (i.elemento > max)
+				max = i.elemento;
+		}
+		return max;
+	}
+    */
 
-    //Editar
-    public Serie remover(int pos) throws Exception {
+	public void mostraPilha() {
+		mostraPilha(topo);
+	}
 
-        //validar remocao
-        if (n == 0 || pos < 0 || pos >= n) {
-           throw new Exception("Erro ao remover!");
-        }
-  
-        Serie resp = array[pos];
-        n--;
-  
-        for(int i = pos; i < n; i++){
-           array[i] = array[i+1];
-        }
-  
-        return resp;
-    }
-
-    //Editar
-    public void mostrar (){
-        System.out.print("[ ");
-        for(int i = 0; i < n; i++){
-            array[i].imprimir();
-        }
-    }
-
-    //Editar
-    public boolean pesquisar(Serie x) {
-        boolean retorno = false;
-        for (int i = 0; i < n && retorno == false; i++) {
-           retorno = (array[i] == x);
-        }
-        return retorno;
-    }
+	private void mostraPilha(Celula i) {
+		if (i != null) {
+			mostraPilha(i.prox);
+			i.elemento.imprimir();
+		}
+	}
 
 }
 
-public class ListaSequencial extends Serie{
+public class PilhaSequencial extends Serie{
     //verifica se chegou no fim
     public static boolean isFim(String s){
         return (s.length() == 3 && s.charAt(0) == 'F' && s.charAt(1) == 'I' && s.charAt(2) == 'M');
@@ -330,45 +288,15 @@ public class ListaSequencial extends Serie{
         return series[countGlobal - 1];
     }
 
-    public static void tratamento(ListaSeq listaSeq, String s) throws Exception {
+    public static void tratamento(Pilha pilha, String s) throws Exception {
         String[] split = new String[3];
         split = s.split(" ");
-        if (split[0].charAt(1) == '*') {
-            // System.out.println("1");
-            if (split[0].charAt(0) == 'I') {
-                int pos = Integer.parseInt(split[1]);
-                listaSeq.inserir(pesquisar(split[2]), pos);
-            } else {
-                int key = Integer.parseInt(split[1]);
-                Serie temp = listaSeq.remover(key);
-                System.out.println("(R) " + temp.getNome());
-            }
-
+        
+        if (s.charAt(0) == 'I') {
+            pilha.inserir(pesquisar(split[1]));
         } else {
-            if (split[0].charAt(0) == 'I') {
-                switch (split[0]) {
-                    case "II":
-                        listaSeq.inserirInicio(pesquisar(split[1]));
-                        break;
-                    case "IF":
-                        listaSeq.inserirFim(pesquisar(split[1]));
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                switch (split[0]) {
-                    case "RI":
-                        Serie temp = listaSeq.removerInicio();
-                        System.out.println("(R) " + temp.getNome());
-                        break;
-                    case "RF":
-                        Serie temp2 = listaSeq.removerFim();
-                        System.out.println("(R) " + temp2.getNome());
-                    default:
-                        break;
-                }
-            }
+            Serie tmp = pilha.remover();
+            System.out.println("(R) " + tmp.getNome());
         }
     }
 
@@ -376,7 +304,7 @@ public class ListaSequencial extends Serie{
     //main
     public static void main (String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in, "ISO-8859-1"));
-        ListaSeq l1 = new ListaSeq(1000);
+        Pilha p1 = new Pilha();
         String link = br.readLine(); //le a primeira linha
         
         while (isFim(link) == false) {
@@ -392,8 +320,9 @@ public class ListaSequencial extends Serie{
         // System.out.println(numero);
         // System.out.println(quantidade);
         for (int i = 0; i < countGlobal; i++) {
-            l1.inserirFim(series[i]);
+            p1.inserir(series[i]);
         }
+        
         String s[] = new String[numero];
         for (int i = 0; i < numero; i++) {
             s[i] = br.readLine();
@@ -401,9 +330,9 @@ public class ListaSequencial extends Serie{
         }
         for (int i = 0; i < numero; i++) {
             //System.out.println(s[i]);
-            tratamento(l1, s[i]);
+            tratamento(p1, s[i]);
         }
-        l1.mostrar();
+        p1.mostrar();
 
 
     }
