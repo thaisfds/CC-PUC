@@ -205,11 +205,9 @@ class Celula {
 
 class Pilha {
 	private Celula topo;
-    private int n;
 
 	public Pilha() {
 		topo = null;
-        n = 0;
 	}
 
 	public void inserir(Serie x) {
@@ -217,7 +215,6 @@ class Pilha {
 		tmp.prox = topo;
 		topo = tmp;
 		tmp = null;
-        n++;
 	}
 
 	public Serie remover() throws Exception {
@@ -229,7 +226,6 @@ class Pilha {
 		topo = topo.prox;
 		tmp.prox = null;
 		tmp = null;
-        n--;
 		return resp;
 	}
 
