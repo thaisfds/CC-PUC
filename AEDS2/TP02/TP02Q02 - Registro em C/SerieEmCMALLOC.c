@@ -3,9 +3,6 @@
 #include<string.h>
 #include<stdbool.h>
 
-#define MAXTAM 100
-
-//Class Serie
 typedef struct serie{
     char nome[50];
     char formato[50];
@@ -17,97 +14,74 @@ typedef struct serie{
     int temporadas;
     int episodios;
 }serie;
-
-serie sArray[1000];
-int countGlobal = 0;
-
-void construtor(){
-    strcpy(sArray[countGlobal].nome, " ");
-    strcpy(sArray[countGlobal].formato , " ");
-    strcpy(sArray[countGlobal].duracao , " ");
-    strcpy(sArray[countGlobal].pais , " ");
-    strcpy(sArray[countGlobal].idioma , " ");
-    strcpy(sArray[countGlobal].emissora , " ");
-    strcpy(sArray[countGlobal].transmissao , " ");
-    sArray[countGlobal].temporadas = 0;
-    sArray[countGlobal].episodios = 0;
+void construtor(serie *s){
+    strcpy(s->nome, " ");
+    strcpy(s->formato, " ");
+    strcpy(s->duracao, " ");
+    strcpy(s->pais, " ");
+    strcpy(s->idioma, " ");
+    strcpy(s->emissora, " ");
+    strcpy(s->transmissao, " ");
+    s->temporadas = 0;
+    s->episodios = 0;
+}
+void setNome(char *nome, serie *s){
+    strcpy(s->nome, nome);
+}
+void setFormato(char *formato, serie *s){
+    strcpy(s->formato, formato);
+}
+void setDuracao(char *duracao, serie *s){
+    strcpy(s->duracao, duracao);
+}
+void setPais(char *pais, serie *s){
+    strcpy(s->pais, pais);
+}
+void setIdioma(char *idioma, serie *s){
+    strcpy(s->idioma, idioma);
+}
+void setEmissora(char *emissora, serie *s){
+    strcpy(s->emissora, emissora);
+}
+void setTransmissao(char *transmissao, serie *s){
+    strcpy(s->transmissao, transmissao);
+}
+void setTemporadas(int temporadas, serie *s){
+    s->temporadas = temporadas;
+}
+void setEpisodios(int episodios, serie *s){
+    s->episodios = episodios;
 }
 
-void setNome(char nome[]){
-    strcpy(sArray[countGlobal].nome , nome);
+char* getNome(serie *s){
+    return s->nome;
+}
+char* getFormato(serie *s){
+    return s->formato;
+}
+char* getDuracao(serie *s){
+    return s->duracao;
+}
+char* getPais(serie *s){
+    return s->pais;
+}
+char* getIdioma(serie *s){
+    return s->idioma;
+}
+char* getEmissora(serie *s){
+    return s->emissora;
+}
+char* getTransmissao(serie *s){
+    return s->transmissao;
+}
+int getTemporadas(serie *s){
+    return s->temporadas;
+}
+int getEpisodios(serie *s){
+    return s->episodios;
 }
 
-void setFormato(char formato[]){
-    strcpy(sArray[countGlobal].formato , formato);
-}
-
-void setDuracao(char duracao[]){
-    strcpy(sArray[countGlobal].duracao , duracao);
-}
-
-void setPais(char pais[]){
-    strcpy(sArray[countGlobal].pais , pais);
-}
-
-void setIdioma(char idioma[]){
-    strcpy(sArray[countGlobal].idioma , idioma);
-}
-
-void setEmissora(char emissora[]){
-    strcpy(sArray[countGlobal].emissora , emissora);
-}
-
-void setTransmissao(char transmissao[]){
-    strcpy(sArray[countGlobal].transmissao , transmissao);
-}
-
-void setTemporadas(int temporadas){
-    sArray[countGlobal].temporadas = temporadas;
-}
-
-void setEpisodios(int episodios){
-    sArray[countGlobal].episodios = episodios;
-}
-
-char* getNome(){
-    return sArray[countGlobal].nome;
-}
-
-char* getFormato(){
-    return sArray[countGlobal].formato;
-}
-
-char* getDuracao(){
-    return sArray[countGlobal].duracao;
-}
-
-char* getPais(){
-    return sArray[countGlobal].pais;
-}
-
-char* getIdioma(){
-    return sArray[countGlobal].idioma;
-}
-
-char* getEmissora(){
-    return sArray[countGlobal].emissora;
-}
-
-char* getTransmissao(){
-    return sArray[countGlobal].transmissao;
-}
-
-int getTemporadas(){
-    return sArray[countGlobal].temporadas;
-}
-
-int getEpisodios(){
-    return sArray[countGlobal].episodios;
-}
-
-//Tratamento
-
-char* removerN(char old[]){
+char* removerN(char* old){
     char *newLine = (char*)malloc(10*sizeof(strlen(old)));
     int i=0, j=0;
     while(i< strlen(old)){
@@ -124,7 +98,11 @@ char* removerN(char old[]){
     free(newLine);
 }
 
-char* naoNumero(char old[]){
+void imprimir(serie *s){
+    printf("%s %s %s %s %s %s %s %i %i\n",removerN(getNome(s)),removerN(getFormato(s)),removerN(getDuracao(s)),removerN(getPais(s)),removerN(getIdioma(s)),removerN(getEmissora(s)),removerN(getTransmissao(s)), getTemporadas(s),getEpisodios(s));
+}
+
+char* naoNumero(char* old){
     
     char *newLine = (char*)malloc(10*sizeof(strlen(old)));
     int i=0, j=0;
@@ -140,7 +118,7 @@ char* naoNumero(char old[]){
     free(newLine);
 }
 
-char* removerTags(char old[]){
+char* removerTags(char* old){
     char *newLine = (char*)malloc(10*sizeof(strlen(old)));
     int i=0, j=0;
     while(i< strlen(old)){
@@ -169,76 +147,64 @@ char* removerTags(char old[]){
     free(newLine);
 }
 
-void imprimir(){
-    //printf("Batataaaaaaa\n");
-    printf("%s %s %s %s %s %s %s %i %i\n",removerN(getNome()),removerN(getFormato()),removerN(getDuracao()),removerN(getPais()),removerN(getIdioma()),removerN(getEmissora()),removerN(getTransmissao()), getTemporadas(),getEpisodios());
-}
+void ler (char link[], serie *s){
+    construtor(s);
 
-void ler (char link[]){
-    //printf("%s\n",link);
-    //FILE *fp = fopen(link,"r");
-    FILE *fp;
-
-    if((fp = fopen(link, "r")) == NULL){
-        printf("Erro ao abrir o arquivo\n");
-        abort();
-    }
+    FILE *fp = fopen(link,"r");
     char buf[3000];
     int numero;
 
     fgets(buf, 3000, fp);
-    //printf("buf = %s\n",buf);
-
+    
     //Pega o nome
     while(strstr(buf,"infobox_v2") == NULL){
         fgets(buf, 3000, fp);
     }
     fgets(buf, 3000, fp);
     fgets(buf, 3000, fp);
-    setNome(removerTags(buf));
-    //printf("Nome = %s",getNome());
+    setNome(removerTags(buf),s);
 
     //Pega o formato
     while(strstr(buf,"Formato") == NULL){
         fgets(buf, 3000, fp);
     }
     fgets(buf, 3000, fp);
-    setFormato(removerTags(buf));
+    setFormato(removerTags(buf),s);
 
     //Pega o duracao
     while(strstr(buf,"Duração") == NULL){
         fgets(buf, 3000, fp);
     }
     fgets(buf, 3000, fp);
-    setDuracao(removerTags(buf));
+    setDuracao(removerTags(buf),s);
     
     //Pega o pais
     while(strstr(buf,"País de origem") == NULL){
         fgets(buf, 3000, fp);
     }
     fgets(buf, 3000, fp);
-    setPais(removerTags(buf));
+    setPais(removerTags(buf),s);
     
     //Pega o idioma
     while(strstr(buf,"Idioma original") == NULL){
         fgets(buf, 3000, fp);
     }
     fgets(buf, 3000, fp);
-    setIdioma(removerTags(buf));
+    setIdioma(removerTags(buf),s);
     
     //Pega o emissora
     while(strstr(buf,"Emissora de televisão original") == NULL){
         fgets(buf, 3000, fp);
     }
     fgets(buf, 3000, fp);
-    setEmissora(removerTags(buf));
+    setEmissora(removerTags(buf),s);
     
     //Pega o transmissao
     while(strstr(buf,"Transmissão original") == NULL){
         fgets(buf, 3000, fp);
     }
     fgets(buf, 3000, fp);
-    setTransmissao(removerTags(buf));
+    setTransmissao(removerTags(buf),s);
 
     //Pega o temporadas
     while(strstr(buf,"N.º de temporadas") == NULL){
@@ -246,7 +212,7 @@ void ler (char link[]){
     }
     fgets(buf, 3000, fp);
     numero = atoi(naoNumero(removerTags(buf)));
-    setTemporadas(numero);
+    setTemporadas(numero,s);
 
     //Pega o episódios
     while(strstr(buf,"N.º de episódios") == NULL){
@@ -254,7 +220,7 @@ void ler (char link[]){
     }
     fgets(buf, 3000, fp);
     numero = atoi(naoNumero(removerTags(buf)));
-    setEpisodios(numero);
+    setEpisodios(numero,s);
 
    fclose(fp);
 }
@@ -270,15 +236,15 @@ int main(){
     char link [100] = "";
     char html [50];
     scanf(" %[^\n]s",html);
+    serie *s = (serie*)malloc(20*sizeof(serie));
 
     while(isFim(html) == false){
         strcpy(link,link1);
         strcat(link,html);
-        ler(link);
-        //printf("Nome = %s",getNome());
-        imprimir();
-        countGlobal++;
+        ler(link,s);
+        imprimir(s);
         scanf(" %[^\n]s",html);
     }
 
+    free(s);
 }
