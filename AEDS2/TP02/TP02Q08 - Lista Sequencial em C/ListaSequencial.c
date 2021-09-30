@@ -266,6 +266,25 @@ void start(){
     n = 0;
 }
 
+void inserirInicio(serie s) {
+    int i;
+
+    //validar insercao
+    if(n >= MAXTAM){
+        printf("Erro ao inserir!");
+        exit(1);
+    } 
+
+    //levar elementos para o fim do array
+    for(i = n; i > 0; i--){
+        listaSeries[i] = listaSeries[i-1];
+    }
+    //printf("INSERINDO %s",s.nome);
+
+    listaSeries[0] = s;
+    n++;
+}
+
 void inserirFim(serie s) {
 
     //validar insercao
@@ -273,7 +292,7 @@ void inserirFim(serie s) {
         printf("Erro ao inserir!");
         exit(1);
     }
-
+    //printf("INSERINDO %s",s.nome);
     listaSeries[n] = s;
     n++;
 }
@@ -290,6 +309,7 @@ void inserir(serie s, int pos) {
     for(i = n; i > pos; i--){
         listaSeries[i] = listaSeries[i-1];
     }
+    //printf("INSERINDO %s",s.nome);
     listaSeries[pos] = s;
     n++;
 }
@@ -349,29 +369,73 @@ void mostrar(){
     int i;
 
     for(i = 0; i < n; i++){
-        printf("%s  ",removerN(listaSeries[i].nome));
-        printf("%s  ",removerN(listaSeries[i].formato));
-        printf("%s  ",removerN(listaSeries[i].duracao));
-        printf("%s  ",removerN(listaSeries[i].pais));
-        printf("%s  ",removerN(listaSeries[i].idioma));
-        printf("%s  ",removerN(listaSeries[i].emissora));
-        printf("%s  ",removerN(listaSeries[i].transmissao));
-        printf("%i  ",listaSeries[i].temporadas);
+        printf("%s ",removerN(listaSeries[i].nome));
+        printf("%s ",removerN(listaSeries[i].formato));
+        printf("%s ",removerN(listaSeries[i].duracao));
+        printf("%s ",removerN(listaSeries[i].pais));
+        printf("%s ",removerN(listaSeries[i].idioma));
+        printf("%s ",removerN(listaSeries[i].emissora));
+        printf("%s ",removerN(listaSeries[i].transmissao));
+        printf("%i ",listaSeries[i].temporadas);
         printf("%i\n",listaSeries[i].episodios);
     }
 
 }
 
-bool pesquisar(serie s) {
-    bool retorno = false;
-    int i;
+serie pesquisar(char key[]){
+    //printf("Key = %s\n",key);
+    //char link1 [50] = "/home/thais/tmp_teste/series/";
+    char link1 [50] = "/tmp/series/";
+    char link [100] = "";
 
-    for (i = 0; i < n && retorno == false; i++) {
-        //retorno = (listaSeries[i] == s);
-    }
-    return retorno;
+    strcpy(link,link1);
+    //printf("link = %s\n",link);
+    strcat(link,key);
+    //printf("link = %s\n",link);
+    ler(link);
+    //printf("sArray[countGlobal]= %s\n",sArray[countGlobal].nome);
+    return sArray[countGlobal];
 }
 
+//Tratamento segunda parte da lista
+void tratamento(char entrada[], int tam){
+    //printf("Char0 = %c, Char1 = %c, Char2 = %c, Char3 = %c\n",entrada[0],entrada[1],entrada[2],entrada[3]);
+    char novaPalavra[tam];
+    for(int i=0; i < tam; i++){
+        novaPalavra[i] = entrada[i+3];
+    }
+
+    int tamI = tam;
+    char novaPalavraI[tamI];
+    char numeros[2];
+    
+    if(entrada[0] == 'I'){
+        if(entrada[1] == 'I'){inserirInicio(pesquisar(novaPalavra));}
+        else if(entrada[1] == 'F'){inserirFim(pesquisar(novaPalavra));}
+        else if(entrada[1] == '*'){
+            for(int i=0; i < tamI; i++){
+                if(i==0 || i==1){numeros[i] = novaPalavra[i];}
+                if(i>2){novaPalavraI[i-3] = novaPalavra[i];}
+            }
+            inserir(pesquisar(novaPalavraI),atoi(numeros));
+        }
+        countGlobal++;
+    }
+    else if(entrada[0] == 'R'){
+        if(entrada[1] == 'I'){
+            printf("(R) %s",listaSeries[0].nome);
+            removerInicio();
+        }
+        else if(entrada[1] == 'F'){
+            printf("(R) %s",listaSeries[n-1].nome);
+            removerFim();
+        }
+        else if(entrada[1] == '*'){
+            printf("(R) %s",listaSeries[atoi(novaPalavra)].nome);
+            remover(atoi(novaPalavra));
+        }
+    }
+}
 
 //verifica se chegou no fim
 bool isFim(char frase[]){
@@ -379,25 +443,44 @@ bool isFim(char frase[]){
 }
 
 int main(){
-    char link1 [50] = "/home/thais/tmp_teste/series/";
-    //char link1 [50] = "/tmp/series/";
+    //char link1 [50] = "/home/thais/tmp_teste/series/";
+    char link1 [50] = "/tmp/series/";
     char link [100] = "";
     char html [50];
     scanf(" %[^\n]s",html);
 
-    printf("\nIMPRIMINDO\n");
+    //printf("\nIMPRIMINDO\n");
     while(isFim(html) == false){
         strcpy(link,link1);
         strcat(link,html);
         ler(link);
         //printf("Nome = %s",getNome());
-        imprimir();
+        //imprimir();
         inserirFim(sArray[countGlobal]);
         countGlobal++;
         scanf(" %[^\n]s",html);
     }
 
-    printf("\nMOSTRANDO\n");
-        mostrar();
+    int quantidade;
+    scanf("%i",&quantidade);
+    //printf("\nquantidade = %i\n",quantidade);
+
+    //for (int i = 0; i < countGlobal; i++) {
+        //inserirFim(sArray[i]);
+    //}
+
+    char entrada[100];
+    int tam;
+
+    //printf("\nENTRADAS\n");
+    for (int i = 0; i < quantidade; i++) {
+        scanf(" %[^\n]s",entrada);
+        tam = strlen(entrada)-2;
+        tratamento(entrada,tam);
+    }
+
+
+    //printf("\nMOSTRANDO\n");
+    mostrar();
 
 }
